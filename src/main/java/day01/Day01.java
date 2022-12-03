@@ -34,15 +34,13 @@ public class Day01 {
     }
 
     private static void part01(List<Integer> calories) {
-        var max = calories.get(2);
-
-        System.out.println("part01: " + max);
+        System.out.println(calories.get(2));
     }
 
     private static void part02(List<Integer> calories) {
         calories
             .stream()
             .reduce(Integer::sum)
-            .ifPresent(sum -> System.out.println("part02: " + sum));
+            .ifPresent(System.out::println);
     }
 }
