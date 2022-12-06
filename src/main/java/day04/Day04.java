@@ -13,11 +13,11 @@ public class Day04 {
             .map(Pair::new)
             .toArray(Pair[]::new);
 
-        part01(pairs);
-        part02(pairs);
+        part1(pairs);
+        part2(pairs);
     }
 
-    static void part01(Pair[] pairs) {
+    static void part1(Pair[] pairs) {
         var numFullyContained = Arrays.stream(pairs)
             .filter(Pair::isFullyContained)
             .count();
@@ -25,7 +25,7 @@ public class Day04 {
         System.out.println(numFullyContained);
     }
 
-    static void part02(Pair[] pairs) {
+    static void part2(Pair[] pairs) {
         var numOverlap = Arrays.stream(pairs)
             .filter(Pair::doesOverlap)
             .count();

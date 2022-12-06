@@ -29,15 +29,15 @@ public class Day01 {
             .skip(calories.size() - 3)
             .toList();
 
-        part01(sorted);
-        part02(sorted);
+        part1(sorted);
+        part2(sorted);
     }
 
-    private static void part01(List<Integer> calories) {
+    private static void part1(List<Integer> calories) {
         System.out.println(calories.get(2));
     }
 
-    private static void part02(List<Integer> calories) {
+    private static void part2(List<Integer> calories) {
         calories
             .stream()
             .reduce(Integer::sum)

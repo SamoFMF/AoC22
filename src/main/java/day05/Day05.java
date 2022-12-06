@@ -37,11 +37,11 @@ public class Day05 {
             .map(Day05::parseMoveLine)
             .toArray(int[][]::new);
 
-        part01(stacks1, moves);
-        part02(stacks2, moves);
+        part1(stacks1, moves);
+        part2(stacks2, moves);
     }
 
-    static void part01(Stack[] stacks, int[][] moves) {
+    static void part1(Stack[] stacks, int[][] moves) {
         Arrays.stream(moves)
             .forEach(move -> parseMove01(stacks, move));
 
@@ -51,7 +51,7 @@ public class Day05 {
             .ifPresent(System.out::println);
     }
 
-    static void part02(Stack[] stacks, int[][] moves) {
+    static void part2(Stack[] stacks, int[][] moves) {
         Arrays.stream(moves)
             .forEach(move -> parseMove02(stacks, move));
 

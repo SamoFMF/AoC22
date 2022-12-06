@@ -14,11 +14,11 @@ public class Day03 {
             .map(Rucksack::new)
             .toList();
 
-        part01(rucksacks);
-        part02(rucksacks);
+        part1(rucksacks);
+        part2(rucksacks);
     }
 
-    static void part01(List<Rucksack> rucksacks) {
+    static void part1(List<Rucksack> rucksacks) {
         rucksacks
             .stream()
             .map(Rucksack::getRepeated)
@@ -27,7 +27,7 @@ public class Day03 {
             .ifPresent(System.out::println);
     }
 
-    static void part02(List<Rucksack> rucksacks) {
+    static void part2(List<Rucksack> rucksacks) {
         var sum = IntStream.range(0, rucksacks.size() / 3)
             .map(i -> 3 * i)
             .map(i -> rucksacks.get(i)

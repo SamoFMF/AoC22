@@ -17,18 +17,18 @@ public class Day02 {
                 .toArray())
             .toList();
 
-        part01(rounds);
-        part02(rounds);
+        part1(rounds);
+        part2(rounds);
     }
 
-    static void part01(List<int[]> rounds) {
+    static void part1(List<int[]> rounds) {
         var score = rounds.stream()
             .reduce(0, (acc, round) -> acc + getScore01(round), Integer::sum);
 
         System.out.println(score);
     }
 
-    static void part02(List<int[]> rounds) {
+    static void part2(List<int[]> rounds) {
         var score = rounds.stream()
             .reduce(0, (x, y) -> x + getScore02(y), Integer::sum);
 
