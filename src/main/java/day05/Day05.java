@@ -12,8 +12,9 @@ public class Day05 {
     public static void main(String[] args) throws IOException {
         var lines = Files.readAllLines(Paths.get("inputs/input05.txt"));
 
-        Stack[] stacks1 = new Stack[9];
-        Stack[] stacks2 = new Stack[9];
+        int numCrates = (lines.get(0).length() + 1) / 4;
+        Stack[] stacks1 = new Stack[numCrates];
+        Stack[] stacks2 = new Stack[numCrates];
         for (int i = 0; i < stacks1.length; i++) {
             stacks1[i] = new Stack();
             stacks2[i] = new Stack();
