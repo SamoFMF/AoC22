@@ -37,10 +37,10 @@ public class Day06 {
         var chars = new char[length];
         data.getChars(iEnd - length, iEnd, chars, 0);
 
-        return searchArray2(chars);
+        return searchArray(chars);
     }
 
-    static SearchResult searchArray2(char[] chars) {
+    static SearchResult searchArray(char[] chars) {
         var seen = new boolean[26];
         for (int i = chars.length - 1; i >= 0; i--) {
             if (seen[chars[i] - 'a']) {
