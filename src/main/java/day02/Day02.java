@@ -1,8 +1,8 @@
 package day02;
 
+import utils.Utils;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,8 @@ public class Day02 {
 
     public static void main(String[] args) throws IOException {
         List<int[]> rounds = new ArrayList<>();
-        Files.readAllLines(Paths.get("inputs/input02.txt"))
+
+        Utils.readAllLines("inputs/input02.txt")
             .forEach(line -> rounds.add(new int[]{line.charAt(0), line.charAt(2)}));
 
         part1(rounds);

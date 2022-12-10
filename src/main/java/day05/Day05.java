@@ -1,8 +1,8 @@
 package day05;
 
+import utils.Utils;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class Day05 {
 
     public static void main(String[] args) throws IOException {
-        var lines = Files.readAllLines(Paths.get("inputs/input05.txt"));
+        var lines = Utils.readAllLines("inputs/input05.txt");
 
         int numCrates = (lines.get(0).length() + 1) / 4;
         Stack[] stacks1 = new Stack[numCrates];

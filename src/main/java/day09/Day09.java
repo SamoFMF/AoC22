@@ -1,14 +1,14 @@
 package day09;
 
+import utils.Utils;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Day09 {
 
     public static void main(String[] args) throws IOException {
-        var lines = Files.readAllLines(Paths.get("inputs/input09.txt"));
+        var lines = Utils.readAllLines("inputs/input09.txt");
 
         part1(lines);
         part2(lines);

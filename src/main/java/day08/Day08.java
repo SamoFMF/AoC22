@@ -1,15 +1,13 @@
 package day08;
 
+import utils.Utils;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Day08 {
 
     public static void main(String[] args) throws IOException {
-        var start = System.currentTimeMillis();
-        var forest = Files.readAllLines(Paths.get("inputs/input08.txt"))
-            .stream()
+        var forest = Utils.readFileStream("inputs/input08.txt")
             .map(line -> line
                 .chars()
                 .mapToObj(Tree::new)
@@ -18,7 +16,6 @@ public class Day08 {
 
         part1(forest);
         part2(forest);
-        System.out.println(System.currentTimeMillis() - start);
     }
 
     static void part1(Tree[][] forest) {

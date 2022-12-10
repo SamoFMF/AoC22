@@ -1,13 +1,13 @@
 package day06;
 
+import utils.Utils;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Day06 {
 
     public static void main(String[] args) throws IOException {
-        var data = Files.readString(Paths.get("inputs/input06.txt"));
+        var data = Utils.readString("inputs/input06.txt");
 
         part1(data);
         part2(data);

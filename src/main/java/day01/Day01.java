@@ -1,46 +1,38 @@
 package day01;
 
+import utils.Utils;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Day01 {
 
     public static void main(String[] args) throws IOException {
-        var lines = Files.readAllLines(Paths.get("inputs/input01.txt"));
-
         List<Integer> calories = new ArrayList<>();
-        calories.add(0);
+        int curCalories = 0;
 
-        for (var line : lines) {
+        for (var line : Utils.readAllLines("inputs/input01.txt")) {
             if (line.isEmpty()) {
-                calories.add(0);
+                calories.add(curCalories);
+                curCalories = 0;
             } else {
-                var prev = calories.get(calories.size() - 1);
-                calories.set(calories.size() - 1, prev + Integer.parseInt(line));
+                curCalories += Integer.parseInt(line);
             }
         }
 
-        var sorted = calories
-            .stream()
-            .sorted()
-            .skip(calories.size() - 3)
-            .toList();
+        calories.sort(Collections.reverseOrder());
 
-        part1(sorted);
-        part2(sorted);
+        part1(calories);
+        part2(calories);
     }
 
     private static void part1(List<Integer> calories) {
-        System.out.println(calories.get(2));
+        System.out.println(calories.get(0));
     }
 
     private static void part2(List<Integer> calories) {
-        calories
-            .stream()
-            .reduce(Integer::sum)
-            .ifPresent(System.out::println);
+        System.out.println(calories.get(0) + calories.get(1) + calories.get(2));
     }
 }
