@@ -4,8 +4,6 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Day05 {
 
@@ -21,22 +19,21 @@ public class Day05 {
         }
 
         int iEmpty = 0;
-        for (var line : lines) {
+        while (lines.get(iEmpty).charAt(1) != '1') {
             iEmpty++;
-            if (line.charAt(1) == '1') {
-                break;
-            }
-
-            parseCratesLine(stacks1, stacks2, line);
         }
-        iEmpty++;
+
+        for (int i = iEmpty - 1; i >= 0; i--) {
+            parseCratesLine(stacks1, stacks2, lines.get(i));
+        }
+
+        iEmpty += 2;
 
 
-        var moves = lines
-            .stream()
-            .skip(iEmpty)
-            .map(Day05::parseMoveLine)
-            .toArray(int[][]::new);
+        var moves = new int[lines.size() - iEmpty][];
+        for (int i = 0; i < moves.length; i++) {
+            moves[i] = parseMoveLine(lines.get(i + iEmpty));
+        }
 
         part1(stacks1, moves);
         part2(stacks2, moves);
@@ -44,71 +41,56 @@ public class Day05 {
 
     static void part1(Stack[] stacks, int[][] moves) {
         Arrays.stream(moves)
-            .forEach(move -> parseMove01(stacks, move));
+            .forEach(move -> parseMove1(stacks, move));
 
-        Arrays.stream(stacks)
-            .map(Stack::getLast)
-            .reduce(String::concat)
-            .ifPresent(System.out::println);
+        printResult(stacks);
     }
 
     static void part2(Stack[] stacks, int[][] moves) {
         Arrays.stream(moves)
-            .forEach(move -> parseMove02(stacks, move));
+            .forEach(move -> parseMove2(stacks, move));
 
-        Arrays.stream(stacks)
-            .map(Stack::getLast)
-            .reduce(String::concat)
-            .ifPresent(System.out::println);
+        printResult(stacks);
+    }
+
+    static void printResult(Stack[] stacks) {
+        var toPrint = new StringBuilder();
+        for (var stack : stacks) {
+            toPrint.append(stack.getLast());
+        }
+        System.out.println(toPrint);
     }
 
     static void parseCratesLine(Stack[] stacks1, Stack[] stacks2, String line) {
-        Matcher m = Pattern.compile("[A-Z]").matcher(line);
-
-        while (m.find()) {
-            var i = m.start() / 4;
-            var crate = m.group();
-
-            stacks1[i].addFirst(crate);
-            stacks2[i].addFirst(crate);
+        for (int i = 0; i < stacks1.length; i++) {
+            var c = line.charAt(4 * i + 1);
+            if (c != ' ') {
+                stacks1[i].add(c);
+                stacks2[i].add(c);
+            }
         }
     }
 
     static int[] parseMoveLine(String line) {
-        int[] moves = new int[3];
-
-        Matcher m = Pattern.compile("\\d+").matcher(line);
-
-        int i = 0;
-        while (m.find()) {
-            moves[i++] = Integer.parseInt(m.group());
-        }
-
-        return moves;
+        var data = line.split("\s");
+        return new int[]{Integer.parseInt(data[1]), Integer.parseInt(data[3]), Integer.parseInt(data[5])};
     }
 
-    static void parseMove01(Stack[] stacks, int[] move) {
-        moveCrates(move[0], stacks[move[1] - 1], stacks[move[2] - 1]);
-    }
-
-    static void parseMove02(Stack[] stacks, int[] move) {
+    static void parseMove1(Stack[] stacks, int[] move) {
         int quantity = move[0];
-        Stack temp = new Stack();
         Stack from = stacks[move[1] - 1];
         Stack to = stacks[move[2] - 1];
 
-        moveCrates(quantity, from, temp);
-        moveCrates(quantity, temp, to);
-    }
-
-    static void moveCrates(int quantity, Stack from, Stack to) {
         for (int i = 0; i < quantity; i++) {
-            moveCrate(from, to);
+            to.add(from.pop());
         }
     }
 
-    static void moveCrate(Stack from, Stack to) {
-        var crate = from.pop();
-        to.add(crate);
+    static void parseMove2(Stack[] stacks, int[] move) {
+        int quantity = move[0];
+        Stack from = stacks[move[1] - 1];
+        Stack to = stacks[move[2] - 1];
+
+        to.addAll(from.removeLastItems(quantity));
     }
 }
