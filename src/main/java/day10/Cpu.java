@@ -1,23 +1,18 @@
 package day10;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Cpu {
     private int X;
     private int cycle;
     private int signal;
-    private String[] crtLine;
 
-    private final List<String[]> crt;
+    private final StringBuilder crt;
 
     public Cpu() {
         X = 1;
         cycle = 0;
         signal = 0;
 
-        crt = new ArrayList<>();
+        crt = new StringBuilder();
     }
 
     public int getSignal() {
@@ -25,22 +20,19 @@ public class Cpu {
     }
 
     public void printCrt() {
-        for (var line : crt) {
-            System.out.println(String.join("", line));
-        }
+        System.out.println(crt);
     }
 
     public void executeInstruction(String line) {
-        cycle++;
-        update();
+        doCycle();
         if (!"noop".equals(line)) {
-            cycle++;
-            update();
+            doCycle();
             X += Integer.parseInt(line.split(" ")[1]);
         }
     }
 
-    private void update() {
+    private void doCycle() {
+        cycle++;
         updateSignal();
         updateCrt();
     }
@@ -55,18 +47,13 @@ public class Cpu {
         var position = (cycle - 1) % 40;
 
         if (position == 0) {
-            crtLine = createCrtLine();
-            crt.add(crtLine);
+            crt.append('\n');
         }
 
         if (position >= X - 1 && position <= X + 1) {
-            crtLine[position] = "#";
+            crt.append('#');
+        } else {
+            crt.append('.');
         }
-    }
-
-    private String[] createCrtLine() {
-        var line = new String[40];
-        Arrays.fill(line, ".");
-        return line;
     }
 }
