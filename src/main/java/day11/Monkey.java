@@ -1,14 +1,15 @@
 package day11;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 public class Monkey {
     private long numInspected;
     private long mod;
-    private LinkedList<Long> items;
+    private Deque<Long> items;
 
-    private final LinkedList<Long> backupItems;
+    private final Deque<Long> backupItems;
     private final Operation operation;
     private final long divisibleBy;
     private final int monkeyIfTrue;
@@ -17,9 +18,9 @@ public class Monkey {
     public Monkey(List<String> lines) {
         numInspected = 0;
 
-        items = new LinkedList<>();
-        backupItems = new LinkedList<>();
-        for (var item : lines.get(1).substring("  Starting items: ".length()).split(", ")) {
+        items = new ArrayDeque<>();
+        backupItems = new ArrayDeque<>();
+        for (var item : lines.get(1).substring("\s\sStarting items:\s".length()).split(",\s")) {
             var itemVal = Long.parseLong(item);
             items.add(itemVal);
             backupItems.add(itemVal);
@@ -27,10 +28,10 @@ public class Monkey {
 
         operation = new Operation(lines.get(2));
 
-        divisibleBy = Long.parseLong(lines.get(3).split(" ")[5]);
+        divisibleBy = Long.parseLong(lines.get(3).split("\s")[5]);
 
-        monkeyIfTrue = Integer.parseInt(lines.get(4).split(" ")[9]);
-        monkeyIfFalse = Integer.parseInt(lines.get(5).split(" ")[9]);
+        monkeyIfTrue = Integer.parseInt(lines.get(4).split("\s")[9]);
+        monkeyIfFalse = Integer.parseInt(lines.get(5).split("\s")[9]);
     }
 
     public long getNumInspected() {

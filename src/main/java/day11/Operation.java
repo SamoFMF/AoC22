@@ -8,7 +8,7 @@ public class Operation {
     private final BiFunction<Long, Long, Long> op;
 
     public Operation(String line) {
-        var data = line.split(" ");
+        var data = line.split("\s");
 
         if ("old".equals(data[5])) {
             left = null;
