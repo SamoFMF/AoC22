@@ -37,7 +37,7 @@ public class Day13 {
     static void part2(List<Pair> pairs) {
         int smaller1 = 1;
         int smaller2 = 1;
-        var packet1 = getPacket("[[2]]");
+        var packet1 = getPacket("[[2]]"); // Add smaller one here
         var packet2 = getPacket("[[6]]");
         for (var pair : pairs) {
             if (pair.getLeft().compareAsLeft(packet1).orElse(false)) smaller1++;
@@ -46,13 +46,7 @@ public class Day13 {
             if (pair.getRight().compareAsLeft(packet2).orElse(false)) smaller2++;
         }
 
-        if (packet1.compareAsLeft(packet2).orElse(false)) {
-            smaller2++;
-        } else {
-            smaller1++;
-        }
-
-        int result = smaller1 * smaller2;
+        int result = smaller1 * (smaller2 + 1);
         System.out.println(result);
     }
 
