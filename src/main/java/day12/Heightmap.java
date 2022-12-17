@@ -1,5 +1,7 @@
 package day12;
 
+import utils.Position;
+
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -67,18 +69,18 @@ public class Heightmap {
         int dcol
     ) {
         Position pos;
-        if (this.comparator.apply(getAtPosition(pos = new Position(node.position().row() + drow, node.position().col() + dcol)), height) && !visited.contains(pos)) {
+        if (this.comparator.apply(getAtPosition(pos = new Position(node.position().x() + dcol, node.position().y() + drow)), height) && !visited.contains(pos)) {
             queue.add(getNode(pos, node.steps() + 1));
             visited.add(pos);
         }
     }
 
     public char getAtPosition(Position position) {
-        if (position.row() < 0 || position.row() >= heightmap.length || position.col() < 0 || position.col() >= heightmap[position.row()].length) {
+        if (position.y() < 0 || position.y() >= heightmap.length || position.x() < 0 || position.x() >= heightmap[position.y()].length) {
             return 255;
         }
 
-        return heightmap[position.row()][position.col()];
+        return heightmap[position.y()][position.x()];
     }
 
     private Node getNode(Position position, int steps) {
@@ -86,7 +88,7 @@ public class Heightmap {
     }
 
     private double getWeight(Position position, int steps) {
-        return steps + (Math.abs(end.row() - position.row()) + Math.abs(end.col() - position.col())) * factor.apply(getAtPosition(position));
+        return steps + (Math.abs(end.y() - position.y()) + Math.abs(end.x() - position.x())) * factor.apply(getAtPosition(position));
     }
 
     private void fillHeightmap(List<String> lines) {
@@ -101,10 +103,10 @@ public class Heightmap {
 
         for (int col = 0; col < mapRow.length; col++) {
             if (mapRow[col] == 'S') {
-                start = new Position(row, col);
+                start = new Position(col, row);
                 mapRow[col] = 'a';
             } else if (mapRow[col] == 'E') {
-                end = new Position(row, col);
+                end = new Position(col, row);
                 mapRow[col] = 'z';
             }
         }

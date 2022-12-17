@@ -24,7 +24,7 @@ public class Solver {
         );
     }
 
-    public int recursiveSolver(
+    private int recursiveSolver(
         Valve[] valves,
         int[] times,
         int pressure

@@ -1,5 +1,6 @@
 package day15;
 
+import utils.Position;
 import utils.Utils;
 
 import java.io.IOException;
@@ -11,8 +12,7 @@ import static day15.EventType.RANGE_START;
 public class Day15 {
 
     public static void main(String[] args) throws IOException {
-        var t0 = System.currentTimeMillis();
-        var lines = Utils.readAllLines("inputs/test.txt");
+        var lines = Utils.readAllLines("inputs/input15.txt");
 
         List<Sensor> sensors = new ArrayList<>();
         Map<Position, Beacon> beacons = new HashMap<>();
@@ -30,7 +30,6 @@ public class Day15 {
 
         part1(sensors, beacons);
         part2(sensors, beacons);
-        System.out.println(System.currentTimeMillis() - t0);
     }
 
     static void part1(List<Sensor> sensors, Map<Position, Beacon> beacons) {

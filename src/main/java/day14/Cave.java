@@ -1,5 +1,6 @@
 package day14;
 
+import utils.Position;
 import utils.Utils;
 
 import java.util.ArrayList;
@@ -11,24 +12,24 @@ public class Cave {
     private int yMax;
     private int score;
 
-    private final Map<Coordinates, Character> blocks;
-    private final Coordinates start;
-    private final List<Coordinates> currentPath;
+    private final Map<Position, Character> blocks;
+    private final Position start;
+    private final List<Position> currentPath;
 
     public Cave() {
         yMax = -1;
         score = 0;
 
         blocks = new HashMap<>();
-        start = new Coordinates(500, 0);
+        start = new Position(500, 0);
         currentPath = new ArrayList<>();
         currentPath.add(start);
     }
 
     public void processLine(String line) {
-        Coordinates prevCoordinates = null;
+        Position prevCoordinates = null;
         for (var coordinatesString : line.split("\s->\s")) {
-            var coordinates = new Coordinates(coordinatesString.split(","));
+            var coordinates = new Position(coordinatesString.split(","));
             addStraightLine(prevCoordinates, coordinates);
             prevCoordinates = coordinates;
         }
@@ -55,13 +56,13 @@ public class Cave {
     private boolean dropSand() {
         var coordinates = currentPath.remove(currentPath.size() - 1);
         while (coordinates.y() < yMax) {
-            Coordinates coordinatesNext;
-            if (!blocks.containsKey(new Coordinates(coordinates.x(), coordinates.y() + 1))) {
-                coordinatesNext = new Coordinates(coordinates.x(), coordinates.y() + 1);
-            } else if (!blocks.containsKey(new Coordinates(coordinates.x() - 1, coordinates.y() + 1))) {
-                coordinatesNext = new Coordinates(coordinates.x() - 1, coordinates.y() + 1);
-            } else if (!blocks.containsKey(new Coordinates(coordinates.x() + 1, coordinates.y() + 1))) {
-                coordinatesNext = new Coordinates(coordinates.x() + 1, coordinates.y() + 1);
+            Position coordinatesNext;
+            if (!blocks.containsKey(new Position(coordinates.x(), coordinates.y() + 1))) {
+                coordinatesNext = new Position(coordinates.x(), coordinates.y() + 1);
+            } else if (!blocks.containsKey(new Position(coordinates.x() - 1, coordinates.y() + 1))) {
+                coordinatesNext = new Position(coordinates.x() - 1, coordinates.y() + 1);
+            } else if (!blocks.containsKey(new Position(coordinates.x() + 1, coordinates.y() + 1))) {
+                coordinatesNext = new Position(coordinates.x() + 1, coordinates.y() + 1);
             } else {
                 coordinatesNext = null;
             }
@@ -80,7 +81,7 @@ public class Cave {
         return false;
     }
 
-    private void addStraightLine(Coordinates start, Coordinates end) {
+    private void addStraightLine(Position start, Position end) {
         if (start == null) {
             blocks.put(end, '#');
 
@@ -94,7 +95,7 @@ public class Cave {
         int dy = Utils.sign(end.y() - start.y());
         var point = start;
         while (!end.equals(point)) {
-            point = new Coordinates(point.x() + dx, point.y() + dy);
+            point = new Position(point.x() + dx, point.y() + dy);
             blocks.put(point, '#');
 
             if (point.y() > yMax) {
