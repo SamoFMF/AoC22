@@ -1,5 +1,6 @@
 package day16;
 
+import day16.models.Valve;
 import utils.Utils;
 
 import java.io.IOException;

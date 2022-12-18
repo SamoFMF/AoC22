@@ -1,4 +1,4 @@
-package day16;
+package day16.models;
 
 import java.util.*;
 
@@ -7,7 +7,6 @@ public class Valve {
     private final int rate;
     private final String[] neighbours;
     private final Map<Valve, Integer> distances;
-    private final List<Integer> openedAt;
 
     public Valve(String line) {
         var data = line.split(";\stunnels?\sleads?\sto\svalves?\s");
@@ -16,22 +15,6 @@ public class Valve {
         neighbours = data[1].split(",\s");
 
         distances = new HashMap<>();
-        openedAt = new ArrayList<>();
-        openedAt.add(0);
-    }
-
-    public int getOpenedAt() {
-        return openedAt.get(openedAt.size() - 1);
-    }
-
-    public int openValve(int time) {
-        var prev = openedAt.get(openedAt.size() - 1);
-        openedAt.add(time);
-        return time - prev;
-    }
-
-    public void closeValve() {
-        openedAt.remove(openedAt.size() - 1);
     }
 
     public String getId() {
@@ -52,12 +35,11 @@ public class Valve {
 
     public void calculateDistances(Map<String, Valve> valves) {
         List<Valve> toAdd = new ArrayList<>();
-        for (String s : neighbours) {
-            toAdd.add(valves.get(s));
-        }
+        toAdd.add(this);
 
-        var d = 1;
+        var d = 0;
         Set<Valve> visited = new HashSet<>();
+        visited.add(this);
 
         while (toAdd.size() > 0 && distances.size() < valves.size()) {
             List<Valve> next = new ArrayList<>();
@@ -65,11 +47,11 @@ public class Valve {
                 if (valve.getRate() > 0) {
                     distances.put(valve, d);
                 }
-                visited.add(valve);
                 for (var neighbour : valve.getNeighbours()) {
                     var nValve = valves.get(neighbour);
                     if (!visited.contains(nValve)) {
                         next.add(nValve);
+                        visited.add(nValve);
                     }
                 }
             }
