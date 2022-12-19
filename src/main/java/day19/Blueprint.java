@@ -23,6 +23,14 @@ public class Blueprint {
         }
     }
 
+    public int[][] getCosts() {
+        return costs;
+    }
+
+    public int[] getGeodeCost() {
+        return costs[3];
+    }
+
     public void addRobot(int[] robots, int[] resources, int robotIdx) {
         robots[robotIdx]++;
         spendResources(resources, robotIdx);

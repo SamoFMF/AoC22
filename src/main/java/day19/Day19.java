@@ -38,79 +38,77 @@ public class Day19 {
         queue.add(
             new Node(
                 new int[]{1, 0, 0, 0},
-                new int[]{0, 0, 0, 0},
-                0
+                new int[]{0, 0, 0, 0}
             )
         );
 
         var time = 0;
         var maxScore = 0;
-        var maxGeodes = 0;
         Map<Resources, List<Resources>> visited = new HashMap<>();
+        var costs = blueprint.getCosts();
+        var maxOreCost = Arrays.stream(costs).mapToInt(c -> c[0]).max().orElse(0);
         while (time < totalTime + 1) {
             time++;
             List<Node> next = new ArrayList<>();
 
-            var newMaxGeodes = maxGeodes;
             for (var node : queue) {
-                if (checkIfDominated(visited, node)) {
-                    continue;
-                }
+                if (checkIfDominated(visited, node)) continue;
 
                 if (node.resources()[3] > maxScore) {
                     maxScore = node.resources()[3];
                 }
-
-                if (node.robots()[3] < maxGeodes - 1) continue;
 
                 // Prioritize creating a new geode robot
                 if (blueprint.canCreateRobot(3, node.resources())) {
                     var resources = addResourceRound(node.resources(), node.robots());
                     var robots = Arrays.copyOf(node.robots(), node.robots().length);
                     blueprint.addRobot(robots, resources, 3);
-                    newMaxGeodes = Math.max(newMaxGeodes, robots[3]);
                     next.add(
                         new Node(
                             robots,
-                            resources,
-                            newMaxGeodes
+                            resources
                         )
                     );
-                    continue;
-                }
+                } else {
+                    var heuristics = getHeuristics(node.robots(), node.resources(), totalTime - time, blueprint.getGeodeCost());
+                    if (heuristics <= maxScore) continue;
 
-                // Try to create new robot
-                for (int i = 0; i < 3; i++) {
-                    if (blueprint.canCreateRobot(i, node.resources())) {
+                    // Try to create a new robot
+                    for (int i = 0; i < 3; i++) {
+                        if (
+                            (i == 0 && node.robots()[0] >= maxOreCost) // Producing more ore than can be spent
+                                || (i == 1 && node.robots()[1] >= costs[2][1]) // Producing more clay than can be spent
+                                || (i == 2 && node.robots()[2] >= costs[3][2]) // Producing more obsidian than can be spent
+                                || !blueprint.canCreateRobot(i, node.resources()) // Not enough resources to build robot
+                        ) {
+                            continue;
+                        }
+
                         var resources = addResourceRound(node.resources(), node.robots());
                         var robots = Arrays.copyOf(node.robots(), node.robots().length);
                         blueprint.addRobot(robots, resources, i);
                         next.add(
                             new Node(
                                 robots,
-                                resources,
-                                newMaxGeodes
+                                resources
                             )
                         );
                     }
-                }
 
-                // Continue without creating a new robot
-                var resources = addResourceRound(node.resources(), node.robots());
-                var robots = Arrays.copyOf(node.robots(), node.robots().length);
-                next.add(
-                    new Node(
-                        robots,
-                        resources,
-                        newMaxGeodes
-                    )
-                );
+                    // Continue without creating a new robot
+                    var resources = addResourceRound(node.resources(), node.robots());
+                    var robots = Arrays.copyOf(node.robots(), node.robots().length);
+                    next.add(
+                        new Node(
+                            robots,
+                            resources
+                        )
+                    );
+                }
             }
 
             queue = next;
-            maxGeodes = newMaxGeodes;
         }
-
 
         return maxScore;
     }
@@ -137,5 +135,34 @@ public class Day19 {
         }
         visited.get(robot).add(resources);
         return false;
+    }
+
+    static int getHeuristics(int[] robot, int[] resources, int time, int[] geodeCost) {
+        var prodOre = robot[0];
+        var prodObs = robot[2];
+        var prodGeo = robot[3];
+        var ore = resources[0];
+        var obs = resources[2];
+        var geo = resources[3];
+
+        for (int i = 0; i <= time; i++) {
+            geo += prodGeo;
+            if (ore >= geodeCost[0] && obs >= geodeCost[2]) {
+                prodGeo++;
+                ore -= geodeCost[0];
+                obs -= geodeCost[2];
+                ore += prodOre;
+                obs += prodObs;
+            } else if (prodOre / geodeCost[0] < prodObs / geodeCost[2]) {
+                ore += prodOre;
+                obs += prodObs;
+                prodOre++;
+            } else {
+                ore += prodOre;
+                obs += prodObs;
+                prodObs++;
+            }
+        }
+        return geo;
     }
 }
