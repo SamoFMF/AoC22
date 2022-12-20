@@ -59,4 +59,9 @@ public class Utils {
     public static int lcm(int a, int b) {
         return (a * b) / gcd(a, b);
     }
+
+    public static int mod(int a, int n) {
+        if (a < 0) return mod(a+n, n);
+        return a % n;
+    }
 }
