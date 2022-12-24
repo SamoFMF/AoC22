@@ -12,7 +12,15 @@ public record Position(
         return new Position(x + position.x(), y + position.y());
     }
 
+    public Position addPositionK(Position position, int k) {
+        return new Position(x + k * position.x(), y + k * position.y());
+    }
+
     public Position(String[] values) {
         this(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
+    }
+
+    public int manhattan(Position position) {
+        return Math.abs(x - position.x()) + Math.abs(y - position.y());
     }
 }
